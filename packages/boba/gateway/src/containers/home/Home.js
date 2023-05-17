@@ -177,53 +177,35 @@ function Home() {
       }
       if (initialized === 'enabled') {
         dispatch(setBaseState(true))
-        // load DAO to speed up the process
-        if (activeNetwork === NETWORK.ETHEREUM) {
-          dispatch(fetchDaoProposals())
-        }
         return true
       }
     }
 
   }, [ dispatch, activeNetwork, activeNetworkType, baseEnabled, maintenance ])
 
-  useInterval(() => {
-    if(accountEnabled /*== MetaMask is connected*/) {
-      dispatch(fetchBalances()) // account specific
+  // useInterval(() => {
+  //   if(accountEnabled /*== MetaMask is connected*/) {
+  //     dispatch(fetchBalances()) // account specific
 
-      if (activeNetwork === NETWORK.ETHEREUM) {
-        dispatch(fetchDaoBalance())      // account specific
-        dispatch(fetchDaoVotes())        // account specific
-        dispatch(fetchDaoBalanceX())     // account specific
-        dispatch(fetchDaoVotesX())       // account specific
-        dispatch(getMonsterInfo()) // account specific
-        dispatch(getFS_Info())   // account specific
-        dispatch(getFS_Saves()) // account specific
-      }
-    }
-    /*== we only have have Base L1 and L2 providers*/
-    if (baseEnabled && activeNetwork === NETWORK.ETHEREUM) {
-      dispatch(getProposalThreshold())
-      dispatch(fetchDaoProposals())
-    }
-  }, POLL_INTERVAL)
+  //     if (activeNetwork === NETWORK.ETHEREUM) {
+  //       dispatch(getMonsterInfo()) // account specific
+  //       dispatch(getFS_Info())   // account specific
+  //       dispatch(getFS_Saves()) // account specific
+  //     }
+  //   }
 
-  useEffect(() => {
-    if (maintenance) return
-    // load the following functions when the home page is open
-    dispatch(getProposalThreshold())
-  }, [ dispatch, maintenance ])
+  // }, POLL_INTERVAL)
 
-  useEffect(() => {
-    if (maintenance) return
-    if (accountEnabled) {
-      dispatch(addTokenList())
-      // monster only availble for ETH
-      if (activeNetwork === NETWORK.ETHEREUM) {
-        dispatch(getMonsterInfo())
-      }
-    }
-  }, [ dispatch, accountEnabled, maintenance, activeNetwork ])
+  // useEffect(() => {
+  //   if (maintenance) return
+  //   if (accountEnabled) {
+  //     dispatch(addTokenList())
+  //     // monster only availble for ETH
+  //     if (activeNetwork === NETWORK.ETHEREUM) {
+  //       dispatch(getMonsterInfo())
+  //     }
+  //   }
+  // }, [ dispatch, accountEnabled, maintenance, activeNetwork ])
 
   // Invoking GA analysis page view hooks
   useGoogleAnalytics();

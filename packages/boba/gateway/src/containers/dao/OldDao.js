@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License. */
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { Box, Typography } from '@mui/material'
@@ -25,22 +25,28 @@ import ListProposal from 'components/listProposal/listProposal'
 
 import Select from 'components/select/Select'
 
-import { 
-  selectDaoBalance, 
-  selectDaoBalanceX, 
-  selectDaoVotes, 
-  selectDaoVotesX, 
-  selectProposals, 
+import {
+  selectDaoBalance,
+  selectDaoBalanceX,
+  selectDaoVotes,
+  selectDaoVotesX,
+  selectProposals,
   selectProposalThreshold,
   selectLoading,
-  selectAccountEnabled, 
-  selectLayer
+  selectAccountEnabled,
+  selectLayer,
+  selectActiveNetwork,
+  selectBaseEnabled
 } from 'selectors'
 
 import * as G from 'containers/Global.styles'
 import * as S from './OldDao.styles'
 import {PageTitle} from 'components'
 import Connect from 'containers/connect/Connect'
+import useInterval from 'hooks/useInterval';
+import { POLL_INTERVAL } from 'util/constant';
+import { NETWORK } from 'util/network/network.util';
+import { fetchDaoBalance, fetchDaoBalanceX, fetchDaoProposals, fetchDaoVotes, fetchDaoVotesX, getProposalThreshold } from 'actions/daoAction';
 
 const PROPOSAL_STATES = [
   { value: 'All', label: 'All' },
@@ -58,8 +64,12 @@ function OldDao() {
 
   const dispatch = useDispatch()
 
+  const activeNetwork = useSelector(selectActiveNetwork())
+  const baseEnabled = useSelector(selectBaseEnabled())
+
   const accountEnabled = useSelector(selectAccountEnabled())
   const layer = useSelector(selectLayer());
+
   const loading = useSelector(selectLoading([ 'PROPOSALS/GET' ]))
 
   let proposals = useSelector(selectProposals)
@@ -72,6 +82,25 @@ function OldDao() {
   const proposalThreshold = useSelector(selectProposalThreshold)
 
   const [ selectedState, setSelectedState ] = useState(PROPOSAL_STATES[ 0 ])
+
+  useEffect(() => {
+    dispatch(getProposalThreshold())
+    dispatch(fetchDaoProposals());
+  }, [ dispatch ])
+
+  /* useInterval(() => {
+    if (accountEnabled && activeNetwork === NETWORK.ETHEREUM) {
+        dispatch(fetchDaoBalance())      // account specific
+        dispatch(fetchDaoVotes())        // account specific
+        dispatch(fetchDaoBalanceX())     // account specific
+        dispatch(fetchDaoVotesX())       // account specific
+    }
+
+    if (baseEnabled && activeNetwork === NETWORK.ETHEREUM) {
+      dispatch(getProposalThreshold())
+      dispatch(fetchDaoProposals());
+    }
+  }, POLL_INTERVAL) */
 
   return (
     <S.DaoPageContainer>
@@ -136,9 +165,9 @@ function OldDao() {
               fullWidth={true}
               color="primary"
               variant="outlined"
-              disabled={!accountEnabled}
+              disabled={!accountEnabled || !Number(proposalThreshold)}
               onClick={() => {
-                if (Number(votes + votesX) < Number(proposalThreshold)) {
+                if ((Number(votes) + Number(votesX)) < Number(proposalThreshold)) {
                   dispatch(openError(`Insufficient BOBA to create a new proposal. You need at least ${proposalThreshold} BOBA + xBOBA to create a proposal.`))
                 } else {
                   dispatch(openModal('newProposalModal'))
