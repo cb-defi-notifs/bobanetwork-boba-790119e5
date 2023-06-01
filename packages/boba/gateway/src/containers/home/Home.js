@@ -97,7 +97,6 @@ import InstallMetaMaskModal from 'containers/modals/noMetaMask/InstallMetaMaskMo
 import useWalletSwitch from 'hooks/useWalletSwitch'
 import NotificationBanner from 'components/notificationBanner'
 
-
 function Home() {
 
   const dispatch = useDispatch()
@@ -312,7 +311,7 @@ function Home() {
       }
 
       {! maintenance &&
-        <Box sx={{ display: 'flex', alignContent: 'space-between', flexDirection: 'column', width: '100%' }}>
+        <>
           <PageHeader />
           <Container maxWidth={false} sx={{
             minHeight: 'calc(100vh - 200px)',
@@ -322,7 +321,7 @@ function Home() {
             <Outlet />
           </Container>
           <PageFooter/>
-        </Box>
+        </>
       }
     </>
   )

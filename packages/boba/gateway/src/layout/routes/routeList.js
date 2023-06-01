@@ -7,7 +7,7 @@ import Home from "containers/home/Home";
 import Projects from 'containers/ecosystem/Projects';
 import Ecosystem from 'containers/ecosystem/Ecosystem';
 import Wallet from 'containers/wallet/Wallet';
-import OldDao from 'containers/dao/OldDao';
+import OldDao from 'containers/Dao/OldDao';
 import History from 'containers/history/History';
 import EarnWrapper from 'containers/earn/EarnWrapper';
 import SaveWrapper from 'containers/save/SaveWrapper';
@@ -17,6 +17,7 @@ import Lock from 'containers/veboba/Lock';
 import Vote from 'containers/VoteAndDao/Vote/Vote';
 import BobaScope from 'containers/bobaScope/BobaScope';
 import DevTools from 'containers/devtools/DevTools';
+import Dao from 'containers/Dao';
 
 export const COMMON_ROUTES = [
   {
@@ -41,6 +42,11 @@ export const ROUTE_LIST = [
     path: '/',
     element: <Home />,
     children: [
+      {
+        path: ROUTES_PATH.BRIDGE,
+        element: <Dao />,
+        key: 'Bridge',
+      },
       {
         path: ROUTES_PATH.BRIDGE,
         element: <Bridge />,
