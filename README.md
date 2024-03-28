@@ -78,7 +78,20 @@ You'll need the following:
 
 **Note: this is only relevant to developers who wish to work on Boba core services. For most test uses, e.g. deploying your contracts, it's simpler to use https://goerli.boba.network**.
 
-Clone the repository, open it, and install nodejs packages with `yarn`:
+Ensure that you have installed and are using nodejs v16.16.0:
+
+```bash
+$ node --version
+v16.16.0
+```
+
+If you have multiple versions of node installed and use nvm, ensure you are using nodejs v16.16.0
+
+```bash
+$ nvm use
+```
+
+Install nodejs packages with `yarn`:
 
 ```bash
 $ git clone git@github.com:bobanetwork/boba.git
@@ -88,14 +101,31 @@ $ yarn
 $ yarn build
 ```
 
-Then, make sure you have Docker installed _and make sure Docker is running_. Finally, build and run the entire stack:
+Then, make sure you have Docker installed _and make sure Docker is running_.
+
+## Spinning up the stack
+
+Build and run the entire stack:
 
 ```bash
 $ cd ops
 $ BUILD=1 DAEMON=0 ./up_local.sh
 ```
 
-## Spinning up the stack
+
+Build side services such as `aa_deployer` and `bundler`
+
+```bash
+$ cd ops
+$ docker-compose -f docker-compose.yml -f docker-compose-side.yml build bundler aa_deployer
+```
+
+Spinning up the side services
+
+```bash
+$ cd ops
+$ docker-compose -f docker-compose.yml -f docker-compose-side.yml up bundler aa_deployer
+```
 
 Stack spinup can take 15 minutes or more. There are many interdependent services to bring up with two waves of contract deployment and initialization. Recommended settings in docker - 10 CPUs, 30 to 40 GB of memory. You can either inspect the Docker `Dashboard>Containers/All>Ops` for the progress of the `ops_deployer` _or_ you can run this script to wait for the sequencer to be fully up:
 
@@ -118,6 +148,12 @@ When the command returns with `Pass: Found L2 Liquidity Pool contract address`, 
 * _To (re)build individual Boba ts services_: `docker-compose build -- builder` then `docker-compose build -- dtl`, for example
 
 ### Running unit tests
+
+To run unit test coverage for whole stack:
+
+```bash
+yarn test:coverage
+```
 
 To run unit tests for a specific package:
 

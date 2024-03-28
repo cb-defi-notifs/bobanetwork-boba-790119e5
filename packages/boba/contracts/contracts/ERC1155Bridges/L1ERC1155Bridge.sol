@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: MIT
 // @unsupported: ovm
 
-/**
- Note: This contract has not been audited, exercise caution when using this on mainnet
- */
 pragma solidity 0.8.9;
 pragma experimental ABIEncoderV2;
 
@@ -14,8 +11,8 @@ import { IERC1155 } from "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import { IERC1155MetadataURI } from "@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol";
 
 /* Library Imports */
-import { CrossDomainEnabled } from "@eth-optimism/contracts/contracts/libraries/bridge/CrossDomainEnabled.sol";
-import { Lib_PredeployAddresses } from "@eth-optimism/contracts/contracts/libraries/constants/Lib_PredeployAddresses.sol";
+import { CrossDomainEnabled } from "@bobanetwork/core_contracts/contracts/libraries/bridge/CrossDomainEnabled.sol";
+import { Lib_PredeployAddresses } from "@bobanetwork/core_contracts/contracts/libraries/constants/Lib_PredeployAddresses.sol";
 import { SafeMath } from "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { ERC1155Holder } from "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";

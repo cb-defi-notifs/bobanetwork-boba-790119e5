@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 const ethers = require('ethers')
-const { getContractFactory } = require('@eth-optimism/contracts')
-const { getBobaContractAt, getBobaContractABI } = require('@boba/contracts')
-const { CrossChainMessenger, isChainIDForGraph } = require('@eth-optimism/sdk')
+const { getContractFactory } = require('@bobanetwork/core_contracts')
+const { getBobaContractAt, getBobaContractABI } = require('@bobanetwork/contracts')
+const { CrossChainMessenger, isChainIDForGraph } = require('@bobanetwork/sdk')
 const { Logger } = require('@eth-optimism/common-ts')
 const fetch = require('node-fetch')
 
@@ -70,6 +70,7 @@ const BOBASTRAW_MONITOR_INTERVAL = env.BOBASTRAW_MONITOR_INTERVAL || 10 * minute
 const L1_BALANCE_MONITOR_ADDRESSES = env.L1_BALANCE_MONITOR_ADDRESSES || ''
 const L2_BALANCE_MONITOR_ADDRESSES = env.L2_BALANCE_MONITOR_ADDRESSES || ''
 const BALANCE_MONITOR_INTERVAL = env.BALANCE_MONITOR_INTERVAL || 10 * minute
+
 /* eslint-enable */
 
 class GlobalEnv {

@@ -1,8 +1,8 @@
 {
-  "name": "@boba/register",
-  "version": "0.0.1",
+  "name": "@bobanetwork/register",
+  "version": "0.0.2",
   "description": "BOBA Smart Contracts Registration",
-  "private": true,
+  "private": false,
   "author": "OMG",
   "license": "MIT",
   "scripts": {
@@ -11,13 +11,13 @@
     "deploy": "ts-node \"./bin/deploy.ts\""
   },
   "dependencies": {
-    "@eth-optimism/contracts": "0.5.11",
+    "@bobanetwork/core_contracts": "0.5.13",
     "@eth-optimism/core-utils": "^0.8.1",
     "@ethersproject/abstract-provider": "^5.5.0",
     "@ethersproject/abstract-signer": "^5.5.0",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@openzeppelin/contracts": "4.3.2",
-    "chalk": "^4.1.1",
+    "chalk": "^5.3.0",
     "dotenv": "^8.2.0",
     "glob": "^7.1.6",
     "patch-package": "^6.4.7"

@@ -1,5 +1,5 @@
 {
-  "name": "@boba/hcb-dapp-contracts",
+  "name": "@bobanetwork/hcb-dapp-contracts",
   "version": "0.1.0",
   "description": "Contracts for HybridCompute UX DApp",
   "main": "index.js",
@@ -23,7 +23,7 @@
     "@ethersproject/providers": "^5.0.24",
     "@ethersproject/solidity": "^5.0.11",
     "@nomiclabs/hardhat-ethers": "^2.0.5",
-    "@openzeppelin/contracts": "^4.5.0",
+    "@openzeppelin/contracts": "^4.9.1",
     "@openzeppelin/contracts-upgradeable": "4.3.2",
     "@openzeppelin/hardhat-upgrades": "^1.17.0",
     "@types/mocha": "^8.2.2",
