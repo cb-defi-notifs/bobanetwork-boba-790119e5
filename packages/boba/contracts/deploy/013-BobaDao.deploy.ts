@@ -1,6 +1,6 @@
 /* Imports: External */
 import { Contract, utils } from 'ethers'
-import { getContractFactory } from '@eth-optimism/contracts'
+import { getContractFactory } from '@bobanetwork/core_contracts'
 import { DeployFunction } from 'hardhat-deploy/dist/types'
 import {
   deployBobaContract,
@@ -24,6 +24,10 @@ const getTimestamp = async (hre) => {
 }
 
 const deployFn: DeployFunction = async (hre) => {
+  if ((hre as any).deployConfig.isLightMode) {
+    console.log('Skipping deployment function as in light mode..')
+    return;
+  }
   if ((hre as any).deployConfig.isLocalAltL1) {
     return
   }

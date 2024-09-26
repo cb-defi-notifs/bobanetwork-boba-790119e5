@@ -28,6 +28,7 @@ import (
 	"github.com/ethereum-optimism/optimism/l2geth/common"
 	"github.com/ethereum-optimism/optimism/l2geth/common/hexutil"
 	"github.com/ethereum-optimism/optimism/l2geth/crypto"
+	"github.com/ethereum-optimism/optimism/l2geth/ethdumper"
 	"github.com/ethereum-optimism/optimism/l2geth/log"
 	"github.com/ethereum-optimism/optimism/l2geth/params"
 	"github.com/ethereum-optimism/optimism/l2geth/rollup/dump"
@@ -594,6 +595,7 @@ func (evm *EVM) Call(caller ContractRef, addr common.Address, input []byte, gas 
 		if len(input) >= 36 && bytes.Equal(input[:4], mintSigHash) {
 			recipient := common.BytesToAddress(input[16:36])
 			statedumper.WriteETH(recipient)
+			ethdumper.Write(recipient)
 		}
 	}
 
@@ -749,6 +751,31 @@ func (evm *EVM) Call(caller ContractRef, addr common.Address, input []byte, gas 
 			// We are in Verifier/Replica mode
 			// Turing for this Transaction has already been run elsewhere - replay using
 			// information from the EVM context
+			if evm.Context.TuringInput == nil {
+				evm.Context.TuringInput = make([]byte, len(input))
+				copy(evm.Context.TuringInput, input)
+				evm.Context.TuringVMDepth = evm.depth
+			} else if !bytes.Equal(input, evm.Context.TuringInput) || evm.depth != evm.Context.TuringVMDepth {
+				log.Debug("TURING ERROR: evm.Context.Turing already set")
+				return nil, gas, ErrTuringDepth
+			}
+
+			// For compatibility, only apply a charge beyond the legacy size limit
+			if isTuring2 {
+				if len(evm.Context.Turing) > 160 {
+					feePerByte := evm.Context.TuringGasMul * 500.0 / 32.0
+					turingGas = uint64(float64(len(evm.Context.Turing)) * feePerByte)
+				}
+
+				if contract.Gas <= turingGas {
+					log.Debug("TURING ERROR: Insufficient gas for calldata", "have", contract.Gas, "need", turingGas)
+					return nil, 0, ErrTuringTooLong
+				} else {
+					log.Debug("TURING Deducting calldata gas", "had", contract.Gas, "len", len(evm.Context.Turing), "Mul", evm.Context.TuringGasMul, "deducting", turingGas)
+					contract.UseGas(turingGas)
+				}
+			}
+
 			ret, err = run(evm, contract, evm.Context.Turing, false)
 			log.Trace("TURING REPLAY", "evm.Context.Turing", evm.Context.Turing)
 		}

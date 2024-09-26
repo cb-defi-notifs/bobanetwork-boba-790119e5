@@ -1,6 +1,6 @@
 /* Imports: External */
 import { Contract } from 'ethers'
-import { getContractFactory } from '@eth-optimism/contracts'
+import { getContractFactory } from '@bobanetwork/core_contracts'
 import { DeployFunction } from 'hardhat-deploy/dist/types'
 import {
   deployBobaContract,
@@ -12,6 +12,10 @@ let BobaFixedSavings: Contract
 let Proxy__BobaFixedSavings: Contract
 
 const deployFn: DeployFunction = async (hre) => {
+  if ((hre as any).deployConfig.isLightMode) {
+    console.log('Skipping deployment function as in light mode..')
+    return;
+  }
   const addressManager = getContractFactory('Lib_AddressManager')
     .connect((hre as any).deployConfig.deployer_l1)
     .attach(process.env.ADDRESS_MANAGER_ADDRESS) as any

@@ -4,16 +4,16 @@ pragma solidity 0.8.9;
 import "./interfaces/iL1LiquidityPool.sol";
 
 /* Library Imports */
-import "@eth-optimism/contracts/contracts/libraries/bridge/CrossDomainEnabled.sol";
-import "@eth-optimism/contracts/contracts/libraries/constants/Lib_PredeployAddresses.sol";
+import "@bobanetwork/core_contracts/contracts/libraries/bridge/CrossDomainEnabled.sol";
+import "@bobanetwork/core_contracts/contracts/libraries/constants/Lib_PredeployAddresses.sol";
 
 /* External Imports */
 import '@openzeppelin/contracts/utils/math/SafeMath.sol';
 import '@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol';
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
-import "@eth-optimism/contracts/contracts/L2/predeploys/OVM_GasPriceOracle.sol";
-import "@eth-optimism/contracts/contracts/L2/messaging/L2StandardBridge.sol";
+import "@bobanetwork/core_contracts/contracts/L2/predeploys/OVM_GasPriceOracle.sol";
+import "@bobanetwork/core_contracts/contracts/L2/messaging/L2StandardBridge.sol";
 
 /* External Imports */
 import "../standards/xL2GovernanceERC20.sol";
@@ -834,7 +834,7 @@ contract L2LiquidityPool is CrossDomainEnabled, ReentrancyGuardUpgradeable, Paus
 
         if (_tokenAddress == Lib_PredeployAddresses.OVM_ETH) {
             require(_amount <= address(this).balance, "Requested ETH exceeds pool balance");
-            L2StandardBridge(Lib_PredeployAddresses.L2_STANDARD_BRIDGE).withdrawTo(
+            L2LiquidityPoolHelper(payable(Lib_PredeployAddresses.L2_STANDARD_BRIDGE)).withdrawTo{ value: _amount }(
                 _tokenAddress,
                 L1LiquidityPoolAddress,
                 _amount,
@@ -1031,4 +1031,16 @@ contract L2LiquidityPool is CrossDomainEnabled, ReentrancyGuardUpgradeable, Paus
         }
     }
 
+}
+
+interface L2LiquidityPoolHelper {
+    function withdrawTo(
+        address _l2Token,
+        address _to,
+        uint256 _amount,
+        uint32 _l1Gas,
+        bytes calldata _data
+    )
+        external
+        payable;
 }

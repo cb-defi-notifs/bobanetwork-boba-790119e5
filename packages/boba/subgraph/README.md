@@ -1,3 +1,13 @@
+# Goldsky migration
+Light bridge has been migrated to Goldsky, more contracts may follow (we may need to evaluate which subgraphs are still needed).
+
+You need only one config file: `subgraph.json`
+This one has to be adapted manually, but the rest is automized.
+
+Just execute `goldsky subgraph deploy light-bridge/v{VERSION} --from-abi ./subgraph.json` to deploy the subgraphs on all supported networks.
+
+---
+
 # Boba Network Subgraphs
 
 These subgraphs index the **StandardBridge**, the **LiquidityPool**, the **Boba DAO**, and the **TuringMonster** contracts.
@@ -87,3 +97,13 @@ Here is some example queries to get you started:
 | 8020     | JSON-RPC<br /> (for managing deployments) | /                       | https://graph.goerli.boba.network:8020                      | Private        |
 | 8030     | Subgraph indexing status API              | /graphql                | https://graph.goerli.boba.network:8030                      | Public         |
 | 8040     | Prometheus metrics                        | /metrics                | https://graph.goerli.boba.network:8040                      | Public         |
+
+
+## Local setup
+
+1. Run local hardhat node and fork network: `npx hardhat node --fork https://replica.goerli.boba.network --hostname 0.0.0.0`
+2. Clone [graph-node](https://github.com/graphprotocol/graph-node)
+3. Replace `mainnet:` with `boba:` in the `ethereum:` property.
+4. Run `docker-compose up` in the `./docker` directory of the repo.
+5. Use the `*:local` commands from the `package.json` in the `boba` repo.
+6. The GraphQL interface will be available here: http://127.0.0.1:8000/subgraphs/name/boba/Bridges

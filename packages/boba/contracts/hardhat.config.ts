@@ -94,6 +94,18 @@ const config: HardhatUserConfig = {
     bobaoperaTestnet: {
       url: 'https://testnet.bobaopera.boba.network',
     },
+    optimismTestnet: {
+      url: 'https://optimism-goerli.publicnode.com',
+    },
+    arbitrumTestnet: {
+      url: 'https://arbitrum-goerli.publicnode.com',
+    },
+    optimismMainnet: {
+      url: 'https://optimism.llamarpc.com',
+    },
+    arbitrumMainnet: {
+      url: 'https://arbitrum.llamarpc.com',
+    },
   },
   solidity: {
     compilers: [
@@ -173,6 +185,10 @@ const config: HardhatUserConfig = {
       bobaopera: 'DEFAULT_KEY',
       fantomTestnet: process.env.FTMSCAN_KEY,
       bobaoperaTestnet: 'DEFAULT_KEY',
+      optimismMainnet: process.env.OPTIMISM_ETHERSCAN_KEY,
+      optimismTestnet: process.env.OPTIMISM_ETHERSCAN_KEY,
+      arbitrumMainnet: process.env.ARBITRUM_ETHERSCAN_KEY,
+      arbitrumTestnet: process.env.ARBITRUM_ETHERSCAN_KEY,
     },
     customChains: [
       {
@@ -227,7 +243,8 @@ const config: HardhatUserConfig = {
         network: 'snowtrace',
         chainId: 43114,
         urls: {
-          apiURL: 'https://api.snowtrace.io/api',
+          apiURL:
+            'https://api.routescan.io/v2/network/mainnet/evm/43114/etherscan/api',
           browserURL: 'https://snowtrace.io',
         },
       },
@@ -317,6 +334,38 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: 'https://blockexplorer.testnet.bobaopera.boba.network/api',
           browserURL: 'https://blockexplorer.testnet.bobaopera.boba.network/',
+        },
+      },
+      {
+        network: 'optimismMainnet',
+        chainId: 10,
+        urls: {
+          apiURL: 'https://api-optimistic.etherscan.io/',
+          browserURL: 'https://optimistic.etherscan.io/',
+        },
+      },
+      {
+        network: 'optimismTestnet',
+        chainId: 420,
+        urls: {
+          apiURL: 'https://api-goerli-optimistic.etherscan.io/',
+          browserURL: 'https://goerli-optimism.etherscan.io/',
+        },
+      },
+      {
+        network: 'arbitrumMainnet',
+        chainId: 42161,
+        urls: {
+          apiURL: 'https://api-arbiscan.io/',
+          browserURL: 'https://arbiscan.io/',
+        },
+      },
+      {
+        network: 'arbitrumTestnet',
+        chainId: 421613,
+        urls: {
+          apiURL: 'https://api-goerli.arbiscan.io/',
+          browserURL: 'https://goerli.arbiscan.io/',
         },
       },
     ],

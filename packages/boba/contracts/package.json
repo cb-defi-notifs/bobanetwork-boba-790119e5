@@ -1,6 +1,6 @@
 {
-  "name": "@boba/contracts",
-  "version": "0.0.1",
+  "name": "@bobanetwork/contracts",
+  "version": "0.0.2",
   "description": "BOBA Smart Contracts",
   "private": true,
   "author": "Enya.ai",
@@ -13,6 +13,7 @@
     "build:typescript": "tsc -p ./tsconfig.json",
     "autogen:artifacts": "ts-node src/generate-artifacts.ts",
     "deploy": "ts-node \"./bin/deploy.ts\"",
+    "deploy:light": "ts-node \"./bin/deploy.lb.ts\"",
     "clean": "rm -rf ./artifacts ./cache",
     "lint": "yarn lint:check",
     "lint:check": "eslint . --ext js,jsx,ts,tsx",
@@ -24,9 +25,9 @@
     "test:slither": "slither ."
   },
   "dependencies": {
-    "@boba/turing-hybrid-compute": "0.2.0",
+    "@bobanetwork/turing-hybrid-compute": "0.2.0",
     "@chainlink/contracts": "0.3.1",
-    "@eth-optimism/contracts": "0.5.11",
+    "@bobanetwork/core_contracts": "0.5.13",
     "@eth-optimism/core-utils": "0.8.1",
     "@ethersproject/abstract-provider": "^5.5.1",
     "@nomiclabs/hardhat-etherscan": "^3.1.0",
@@ -53,7 +54,7 @@
     "@typescript-eslint/eslint-plugin": "^5.45.1",
     "@typescript-eslint/parser": "^5.45.1",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-jsdoc": "^35.1.2",
+    "eslint-plugin-jsdoc": "^46.2.6",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^3.4.0",

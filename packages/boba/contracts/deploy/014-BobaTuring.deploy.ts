@@ -1,16 +1,20 @@
 /* Imports: External */
 import { Contract, utils } from 'ethers'
 import { DeployFunction, DeploymentSubmission } from 'hardhat-deploy/dist/types'
-import { getContractFactory } from '@eth-optimism/contracts'
+import { getContractFactory } from '@bobanetwork/core_contracts'
 import { registerBobaAddress } from '../src/hardhat-deploy-ethers'
 
-import TuringHelperJson from '@boba/turing-hybrid-compute/artifacts/contracts/TuringHelper.sol/TuringHelper.json'
+import TuringHelperJson from '@bobanetwork/turing-hybrid-compute/artifacts/contracts/TuringHelper.sol/TuringHelper.json'
 
 let L2Boba: Contract
 
 let BobaTuringHelper: Contract
 
 const deployFn: DeployFunction = async (hre) => {
+  if ((hre as any).deployConfig.isLightMode) {
+    console.log('Skipping deployment function as in light mode..')
+    return;
+  }
   const isLocalAltL1 = (hre as any).deployConfig.isLocalAltL1
 
   const addressManager = getContractFactory('Lib_AddressManager')

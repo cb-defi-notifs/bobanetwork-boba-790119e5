@@ -1,5 +1,5 @@
 import { Contract, ContractFactory } from 'ethers'
-import { getContractFactory } from '@eth-optimism/contracts'
+import { getContractFactory } from '@bobanetwork/core_contracts'
 import { DeployFunction } from 'hardhat-deploy/dist/types'
 import {
   getDeploymentSubmission,
@@ -14,6 +14,10 @@ let Factory__Proxy__L1CrossDomainMessengerFast: ContractFactory
 let Proxy__L1CrossDomainMessengerFast: Contract
 
 const deployFn: DeployFunction = async (hre) => {
+  if ((hre as any).deployConfig.isLightMode) {
+    console.log('Skipping deployment function as in light mode..')
+    return;
+  }
 
   const addressManager = getContractFactory('Lib_AddressManager')
     .connect((hre as any).deployConfig.deployer_l1)
